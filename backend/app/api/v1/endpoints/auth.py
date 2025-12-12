@@ -25,7 +25,7 @@ router = APIRouter()
 # limiter = Limiter(key_func=get_remote_address)
 
 
-@router.post("/register", response_model=UserResponse, status_code=status.HTTP_201_CREATED)
+@router.post("/register", response_model=Token, status_code=status.HTTP_201_CREATED)
 # # @limiter.limit("5/minute")
 async def register(
     user_data: UserCreate,
@@ -42,6 +42,9 @@ async def register(
     
     # Create new user
     hashed_password = get_password_hash(user_data.password)
+    # Use provided role or default to BUYER
+    user_role = user_data.role if hasattr(user_data, 'role') and user_data.role else UserRole.BUYER
+    
     db_user = User(
         name=user_data.name,
         email=user_data.email,
@@ -49,14 +52,26 @@ async def register(
         phone=user_data.phone,
         date_of_birth=user_data.date_of_birth,
         gender=user_data.gender,
-        role=UserRole.BUYER
+        role=user_role
     )
     
     db.add(db_user)
     db.commit()
     db.refresh(db_user)
     
-    return db_user
+    # Create access token for immediate login after registration
+    access_token_expires = timedelta(minutes=settings.JWT_ACCESS_TOKEN_EXPIRE_MINUTES)
+    access_token = create_access_token(
+        data={"sub": str(db_user.id)}, expires_delta=access_token_expires
+    )
+    
+    # Return token response similar to login
+    from app.schemas.user import Token
+    return Token(
+        access_token=access_token,
+        token_type="bearer",
+        user=db_user
+    )
 
 
 @router.post("/login", response_model=Token)

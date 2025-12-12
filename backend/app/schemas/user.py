@@ -18,11 +18,19 @@ class UserBase(BaseModel):
 
 class UserCreate(UserBase):
     password: str
+    role: Optional[UserRole] = UserRole.BUYER
     
     @validator('password')
     def validate_password(cls, v):
         if len(v) < 8:
             raise ValueError('Password must be at least 8 characters long')
+        return v
+    
+    @validator('role')
+    def validate_role(cls, v):
+        # Only allow buyer or seller during registration, not admin
+        if v == UserRole.ADMIN:
+            raise ValueError('Cannot register as admin')
         return v
 
 

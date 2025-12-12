@@ -98,6 +98,7 @@ export const AuthProvider = ({ children }) => {
   const register = async (userData) => {
     try {
       const response = await authAPI.register(userData);
+      // Registration now returns Token object with access_token and user
       const { access_token, user } = response.data;
       
       localStorage.setItem('token', access_token);
@@ -112,7 +113,7 @@ export const AuthProvider = ({ children }) => {
       toast.success('Registration successful!');
       return { success: true };
     } catch (error) {
-      const message = error.response?.data?.message || 'Registration failed';
+      const message = error.response?.data?.detail || error.response?.data?.message || 'Registration failed';
       toast.error(message);
       return { success: false, error: message };
     }

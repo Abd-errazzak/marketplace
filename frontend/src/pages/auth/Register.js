@@ -9,6 +9,7 @@ const Register = () => {
     email: '',
     password: '',
     confirmPassword: '',
+    role: 'buyer', // Default to buyer
   });
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -38,6 +39,7 @@ const Register = () => {
       name: formData.name,
       email: formData.email,
       password: formData.password,
+      role: formData.role,
     });
     
     if (result.success) {
@@ -175,6 +177,28 @@ const Register = () => {
                   )}
                 </button>
               </div>
+            </div>
+            
+            <div>
+              <label htmlFor="role" className="form-label">
+                Account Type
+              </label>
+              <select
+                id="role"
+                name="role"
+                value={formData.role}
+                onChange={handleChange}
+                className="form-input"
+                required
+              >
+                <option value="buyer">Buyer - Shop for products</option>
+                <option value="seller">Seller - Sell your products</option>
+              </select>
+              <p className="mt-1 text-sm text-gray-500">
+                {formData.role === 'seller' 
+                  ? 'As a seller, you can list and manage your products after registration.'
+                  : 'As a buyer, you can browse and purchase products.'}
+              </p>
             </div>
           </div>
 
