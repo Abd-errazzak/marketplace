@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useReducer, useEffect } from 'react';
 import { authAPI } from '../services/api';
 import toast from 'react-hot-toast';
+import { getErrorMessage, logError } from '../utils/errorHandler';
 
 const AuthContext = createContext();
 
@@ -113,7 +114,8 @@ export const AuthProvider = ({ children }) => {
       toast.success('Registration successful!');
       return { success: true };
     } catch (error) {
-      const message = error.response?.data?.detail || error.response?.data?.message || 'Registration failed';
+      logError(error, 'Registration');
+      const message = getErrorMessage(error);
       toast.error(message);
       return { success: false, error: message };
     }

@@ -35,18 +35,29 @@ const Register = () => {
     
     setLoading(true);
 
-    const result = await register({
-      name: formData.name,
-      email: formData.email,
-      password: formData.password,
-      role: formData.role,
-    });
-    
-    if (result.success) {
-      navigate('/');
+    try {
+      const result = await register({
+        name: formData.name,
+        email: formData.email,
+        password: formData.password,
+        role: formData.role,
+      });
+      
+      if (result.success) {
+        navigate('/');
+      } else {
+        // Error is already shown via toast in AuthContext
+        console.error('Registration failed:', result.error);
+        // Also show in alert for visibility
+        alert(`Registration Failed!\n\nError: ${result.error}\n\nPlease check:\n1. Backend is running on http://localhost:8000\n2. MySQL is running in XAMPP\n3. Database 'marketplace' exists\n4. Check browser console (F12) for more details`);
+      }
+    } catch (error) {
+      console.error('Registration error:', error);
+      const errorMsg = error.message || 'Unknown error';
+      alert(`Registration Failed!\n\nError: ${errorMsg}\n\nPlease check:\n1. Backend is running on http://localhost:8000\n2. MySQL is running in XAMPP\n3. Check browser console (F12) for more details`);
+    } finally {
+      setLoading(false);
     }
-    
-    setLoading(false);
   };
 
   return (
