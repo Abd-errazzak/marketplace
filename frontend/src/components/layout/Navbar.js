@@ -11,7 +11,7 @@ import {
   FiLogOut,
   FiSettings,
   FiPackage,
-  FiBarChart3,
+  FiBarChart,
   FiUsers
 } from 'react-icons/fi';
 
@@ -143,7 +143,7 @@ const Navbar = () => {
                           className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                           onClick={() => setIsUserMenuOpen(false)}
                         >
-                          <FiBarChart3 className="mr-3 h-4 w-4" />
+                          <FiBarChart className="mr-3 h-4 w-4" />
                           Seller Dashboard
                         </Link>
                         <Link
