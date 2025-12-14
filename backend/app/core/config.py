@@ -16,8 +16,8 @@ class Settings(BaseSettings):
     LOG_LEVEL: str = "INFO"
     
     # Database
-    DATABASE_URL: str = "mysql://root:password@localhost:3306/marketplace"
-    DB_HOST: str = "localhost"
+    DATABASE_URL: str = "mysql+pymysql://root:password@mysql:3306/marketplace"
+    DB_HOST: str = "mysql"
     DB_PORT: int = 3306
     DB_NAME: str = "marketplace"
     DB_USER: str = "root"

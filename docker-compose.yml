@@ -10,7 +10,7 @@ services:
       MYSQL_USER: marketplace_user
       MYSQL_PASSWORD: marketplace_password
     ports:
-      - "3306:3306"
+      - "3307:3306"
     volumes:
       - mysql_data:/var/lib/mysql
       - ./database/schema.sql:/docker-entrypoint-initdb.d/schema.sql
@@ -39,7 +39,7 @@ services:
     ports:
       - "8000:8000"
     environment:
-      - DATABASE_URL=mysql://marketplace_user:marketplace_password@mysql:3306/marketplace
+      - DATABASE_URL=mysql+pymysql://marketplace_user:marketplace_password@mysql:3306/marketplace
       - REDIS_URL=redis://redis:6379
       - JWT_SECRET_KEY=your-super-secret-jwt-key-change-in-production
       - STRIPE_SECRET_KEY=${STRIPE_SECRET_KEY}

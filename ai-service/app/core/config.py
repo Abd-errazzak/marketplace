@@ -16,7 +16,7 @@ class Settings(BaseSettings):
     LOG_LEVEL: str = "INFO"
     
     # Database
-    DATABASE_URL: str = "mysql://root:password@localhost:3306/marketplace"
+    DATABASE_URL: str = "mysql+pymysql://root:password@mysql:3306/marketplace"
     
     # AI Service
     AI_API_KEY: str = "your-ai-service-api-key"
